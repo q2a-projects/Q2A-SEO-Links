@@ -36,22 +36,47 @@
 		));
 		$rel_types = array(1 => 'Nofollow', 2 => 'External', 3 => 'Nofollow External', 4 => '');
 		$links_list=json_decode(qa_opt('seo_links_list'));
-		// remove all rel attributes
-		$safe= preg_replace('/(<[^>]+) rel=".*?"/i', '$1',$safe); 
-		// add nofollow to them all
-		$safe = preg_replace('/<a /', '<a rel="nofollow" ', $safe);
-		foreach($links_list as $key=>$value)
-		{
-			// add rel attribute according to host address
-			$search = '#<a rel="nofollow" href="'. $value->host .'("|/[^"]*")#i';
-			$replace = '<a rel="'. $rel_types[$value->rel] .'" href="'. $value->host .'\1'; //
-			$safe= preg_replace( $search, $replace, $safe );
+		
+		$dom = new DOMDocument;
+		$dom->loadHTML($safe);
+		$links = $dom->getElementsByTagName('a');
+		// apply rel change to list of links
+		foreach ($links as $link) {
+			foreach($links_list as $key=>$value)
+			{	
+				$site_url=parse_url($value->host);
+				// add rel attribute according to host address
+				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+					$link->setAttribute('rel', $rel_types[$value->rel]);
+			}
 		}
+		/* ~~ old method
+			// remove all rel attributes
+			$safe= preg_replace('/(<[^>]+) rel=".*?"/i', '$1',$safe); 
+			// add nofollow to them all
+			$safe = preg_replace('/<a /', '<a rel="nofollow" ', $safe);
+			foreach($links_list as $key=>$value)
+			{
+				// add rel attribute according to host address
+				$search = '#<a rel="nofollow" href="'. $value->host .'("|/[^"]*")#i';
+				$replace = '<a rel="'. $rel_types[$value->rel] .'" href="'. $value->host .'\1'; //
+				$safe= preg_replace( $search, $replace, $safe );
+			}
+		*/
 		if( qa_opt('seo_links_internal_links') )
 		{
+			foreach ($links as $link) {
+				$site_url=parse_url(qa_opt('site_url'));
+				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+					$link->setAttribute('rel', 'dofollow');
+			}
+			$safe = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $dom->saveHTML()));
+		
+			/* ~~ old method
 			$search = '#<a rel="nofollow" href="' . qa_opt('site_url') . '("|/[^"]*")#i';
 			$replace = '<a href="' . qa_opt('site_url') . '\1';
 			$safe = preg_replace( $search, $replace, $safe );
+			*/
 		}
 		return $safe;
 	}
