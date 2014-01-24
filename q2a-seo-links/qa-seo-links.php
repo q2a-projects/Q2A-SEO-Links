@@ -20,25 +20,12 @@
 	storing in the database, rather than immediate display to user - some think this should be less strict.
 */
 	{
-		require_once 'qa-htmLawed.php';
-		
-		global $qa_sanitize_html_newwindow;
-		
-		$qa_sanitize_html_newwindow=$linksnewwindow;
-		
-		$safe=htmLawed($html, array(
-			'safe' => 1,
-			'elements' => '*+embed+object',
-			'schemes' => 'href: aim, feed, file, ftp, gopher, http, https, irc, mailto, news, nntp, sftp, ssh, telnet; *:file, http, https; style: !; classid:clsid',
-			'keep_bad' => 0,
-			//'anti_link_spam' => array('/.*/', ''),
-			'hook_tag' => 'qa_sanitize_html_hook_tag',
-		));
+		$safe=qa_sanitize_html_base($html, $linksnewwindow, $storage);
 		$rel_types = array(1 => 'Nofollow', 2 => 'External', 3 => 'Nofollow External', 4 => '');
 		$links_list=json_decode(qa_opt('seo_links_list'));
-		
 		$dom = new DOMDocument;
-		$dom->loadHTML($safe);
+		$encod  = mb_detect_encoding($safe);
+		$dom->loadHTML(mb_convert_encoding($safe, 'HTML-ENTITIES', $encod));
 		$links = $dom->getElementsByTagName('a');
 		// apply rel change to list of links
 		foreach ($links as $link) {

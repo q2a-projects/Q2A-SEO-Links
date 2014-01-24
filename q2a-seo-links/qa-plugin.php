@@ -5,8 +5,8 @@
     Plugin URI: https://github.com/Towhidn/Q2A-SEO-Links/
     Plugin Update Check URI:  https://github.com/Towhidn/Q2A-SEO-Links/master/qa-plugin.php
     Plugin Description: SEO Links for Question2Answer
-    Plugin Version: 1.1
-    Plugin Date: 2013-11-12
+    Plugin Version: 1.2
+    Plugin Date: 2014-24-1
     Plugin Author: QA-Themes.com
     Plugin Author URI: http://QA-Themes.com
     Plugin License: copy lifted                           
