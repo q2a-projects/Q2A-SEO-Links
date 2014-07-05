@@ -33,8 +33,9 @@
 			{	
 				$site_url=parse_url($value->host);
 				// add rel attribute according to host address
-				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
-					$link->setAttribute('rel', $rel_types[$value->rel]);
+				if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link->getAttribute('href')))) )
+					if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+						$link->setAttribute('rel', $rel_types[$value->rel]);
 			}
 		}
 		/* ~~ old method
