@@ -3,7 +3,7 @@
 /*              
     Plugin Name: SEO Links
     Plugin URI: https://github.com/Towhidn/Q2A-SEO-Links/
-    Plugin Update Check URI:  https://github.com/Towhidn/Q2A-SEO-Links/blob/master/q2a-seo-links/qa-plugin.php
+    Plugin Update Check URI:  https://raw.githubusercontent.com/Towhidn/Q2A-SEO-Links/master/q2a-seo-links/qa-plugin.php
     Plugin Description: SEO Links for Question2Answer
     Plugin Version: 1.2
     Plugin Date: 2014-24-1
