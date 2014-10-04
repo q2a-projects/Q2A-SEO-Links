@@ -28,13 +28,19 @@
 		$dom->loadHTML(mb_convert_encoding($safe, 'HTML-ENTITIES', $encod));
 		$links = $dom->getElementsByTagName('a');
 		// apply rel change to list of links
+		
 		foreach ($links as $link) {
 			foreach($links_list as $key=>$value)
 			{	
 				$site_url=parse_url($value->host);
+				if(isset($site_url['host']))
+					$host= $site_url['host'];
+				else
+					$host= $site_url['path'];
+				
 				// add rel attribute according to host address
-				if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link->getAttribute('href')))) )
-					if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+				if( $host && $link->getAttribute('href') )
+					if (strpos( strtolower($link->getAttribute('href')) , strtolower($host) ))
 						$link->setAttribute('rel', $rel_types[$value->rel]);
 			}
 		}
