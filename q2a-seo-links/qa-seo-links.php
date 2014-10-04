@@ -96,7 +96,7 @@
 				$site_host= $site_url['host'];
 			else
 				$site_host= $site_url['path'];
-			if($host==site_host)
+			if($host==$site_host)
 				$rel = 'dofollow';
 		}
 		return substr(preg_replace('/([^A-Za-z0-9])((http|https|ftp):\/\/([^\s&<>"\'\.])+\.([^\s&<>"\']|&amp;)+)/i', '\1<a href="\2" rel="'. $rel .'"'.($newwindow ? ' target="_blank"' : '').'>\2</a>', ' '.$html.' '), 1, -1);
