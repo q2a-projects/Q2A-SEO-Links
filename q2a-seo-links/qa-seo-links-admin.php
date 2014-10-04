@@ -93,6 +93,7 @@
 	</tr>
 </table>
 <hr/>';
+				$relation[$value->rel]='';
 				$relation[qa_opt('seo_links_default_rel_'.$idx)] = '';
 				$idx++;
 			}
